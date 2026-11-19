@@ -35,11 +35,23 @@ function App() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const card = { name, type, attack: Number(attack) };
-    setCards([...cards, card]);
-    setName("");
-    setType("Criatura");
-    setAttack("");
+
+    fetch("http://localhost:3000/api/cartas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, type, attack: Number(attack) }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((card) => {
+        setCards([...cards, card]);
+        setName("");
+        setType("Criatura");
+        setAttack("");
+      })
+      .catch((err) => console.error(err));
   }
 
   function pickRandom() {
