@@ -82,7 +82,12 @@ app.get("/api/cartas", (req, res) => {
 });
 
 app.post("/api/cartas", (req, res) => {
-  const card = req.body;
+  const card = req.body || {};
+
+  if (!card.name || !card.type) {
+    return res.status(400).json({ error: "Falta o nome ou o tipo" });
+  }
+
   cards.push(card);
   guardar();
   res.status(201).json(card);

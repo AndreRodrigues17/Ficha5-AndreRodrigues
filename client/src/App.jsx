@@ -13,6 +13,7 @@ function App() {
   const [name, setName] = useState("");
   const [type, setType] = useState("Criatura");
   const [attack, setAttack] = useState("");
+  const [formError, setFormError] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/cartas")
@@ -50,8 +51,9 @@ function App() {
         setName("");
         setType("Criatura");
         setAttack("");
+        setFormError(null);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setFormError(err.message));
   }
 
   function pickRandom() {
@@ -104,6 +106,7 @@ function App() {
         />
         <button type="submit">Adicionar</button>
       </form>
+      {formError && <p>{formError}</p>}
 
       <p>
         Tenho {cards.length} cartas · a mostrar {visible.length}
